@@ -36,3 +36,9 @@ If a Shelly device is not reachable on startup, a message box will appear and th
 ### How-to exit...
 Just right-click on the tray icon and use "Exit".
 If you have more than one devices configured, the Application exits after the last Shelly icon is closed.
+
+## Donations
+
+Whoever likes to donate some Euros...
+
+https://www.paypal.com/paypalme/hadez16Tools
