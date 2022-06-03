@@ -1,6 +1,8 @@
 # ShellyForWindows
 A little tool for displaying the current power consumption of Shelly Gen1 API devices in the Windows system tray
 
+![2022-06-03 07_01_45-](https://user-images.githubusercontent.com/106725788/171790851-6a66ce45-4ccf-40f6-ae2e-c5fd2d825bfb.png)
+
 ## Description
 The tool is for all Gen1 Shelly Devices who support the /meter/0 REST endpoint for receiving the current power consumption e.g. a Shelly PlugS.
 
@@ -20,6 +22,8 @@ For adding more Shelly devices, just copy-paste the whole block and change the v
 
 Refer to http://www.flounder.com/csharp_color_table.htm for possible values. Use them without the Dot like in the INI example above.
 
+***The tool uses the IP address of the Shelly device in your Local Area Network! No cloud support (yet)***
+
 ## How-To and Best Practice
 * Download the releae or build the solution by yourself
 * Edit the .ini to your needs
@@ -28,3 +32,7 @@ Refer to http://www.flounder.com/csharp_color_table.htm for possible values. Use
 ***It is highly recommended to assign a static IP address to your Shelly device because DHCP servers could assign another IP address what will break your config.ini configuration***
 
 If a Shelly device is not reachable on startup, a message box will appear and the device is skipped. If all devices are not reachable, the application exits.
+
+### How-to exit...
+Just right-click on the tray icon and use "Exit".
+If you have more than one devices configured, the Application exits after the last Shelly icon is closed.
