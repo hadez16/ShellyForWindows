@@ -27,7 +27,7 @@ Refer to http://www.flounder.com/csharp_color_table.htm for possible values. Use
 ## How-To and Best Practice
 * Download the releae or build the solution by yourself
 * Edit the .ini to your needs
-* Run the ShellyGen1Tray.eye
+* Run the ShellyGen1Tray.exe
 
 ***It is highly recommended to assign a static IP address to your Shelly device because DHCP servers could assign another IP address what will break your config.ini configuration***
 
