@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32413.511
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellyGen1Tray", "ShellyGen1Tray.csproj", "{AC7FCB3D-8240-4619-B1F3-AE930631C7CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC7FCB3D-8240-4619-B1F3-AE930631C7CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7FCB3D-8240-4619-B1F3-AE930631C7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7FCB3D-8240-4619-B1F3-AE930631C7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7FCB3D-8240-4619-B1F3-AE930631C7CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {210DC212-F93C-4E92-962F-D77589F43C57}
+	EndGlobalSection
+EndGlobal
