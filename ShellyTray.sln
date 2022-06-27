@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellyGen1Tray", "ShellyGen1Tray.csproj", "{AC7FCB3D-8240-4619-B1F3-AE930631C7CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellyTray", "ShellyTray.csproj", "{AC7FCB3D-8240-4619-B1F3-AE930631C7CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

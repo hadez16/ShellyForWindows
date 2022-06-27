@@ -17,20 +17,9 @@ using System.Runtime.InteropServices;
 using IniParser;
 using IniParser.Model;
 
-namespace ShellyGen1Tray
+namespace ShellyTray
 {
-    
 
-    public class ShellyResponse
-    {
-        public double power { get; set; }
-        public bool is_valid { get; set; }
-        public int timestamp { get; set; }
-        public List<double> counters { get; set; }
-        public int total { get; set; }
-    }
-
-    
 
     public partial class ShellyGen1Tray : ApplicationContext
     {
@@ -56,21 +45,33 @@ namespace ShellyGen1Tray
 
             foreach (SectionData section in data.Sections)
             {
-                 
-                RestClient restClient = new RestClient("http://" + section.Keys["IPAddress"] + "/meter/0", HttpVerb.GET);
+                ShellyDevice shelly = null;
+
+                if (section.Keys["APIgeneration"] == "1")
+                {
+                    shelly = new ShellyDeviceGen1(section.Keys["IPAddress"], section.Keys["Color"], section.SectionName, section.Keys["UpdateInterval"], Convert.ToInt32(section.Keys["NumberOfSensors"]));
+                }
+                else if(section.Keys["APIgeneration"] == "2")
+				{
+                    shelly = new ShellyDeviceGen2(section.Keys["IPAddress"], section.Keys["Color"], section.SectionName, section.Keys["UpdateInterval"], Convert.ToInt32(section.Keys["NumberOfSensors"]));
+                }
+                    
                 try
                 {
-                    string json = restClient.MakeRequest();
-
-                    shellys.Add(new ShellyDevice(section.Keys["IPAddress"], section.Keys["Color"], section.SectionName, section.Keys["UpdateInterval"]));
+                    if(shelly != null)
+                    { 
+                        shelly.CheckConnection();
+                        shellys.Add(shelly);
+                    }
 
                 }
                 catch
                 {
                     MessageBox.Show("Shelly \"" + section.SectionName + "\" ist nicht erreichbar, oder verwendet die neuere API-Generation.\nÜberspringe oder Beende....,", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                } 
-
+                }
             }
+
+            shellys.ForEach(x => x.Start());
 
             if (shellys.Count == 0)
                 Application.Exit();

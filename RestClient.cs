@@ -11,7 +11,7 @@ public enum HttpVerb
     DELETE
 }
 
-namespace ShellyGen1Tray
+namespace ShellyTray
 {
     public class RestClient
     {

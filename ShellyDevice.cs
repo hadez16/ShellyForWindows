@@ -10,17 +10,18 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Drawing;
 
-namespace ShellyGen1Tray
+namespace ShellyTray
 {
-    public class ShellyDevice
+    public abstract class ShellyDevice
     {
-        NotifyIcon notifyIcon;
-        public string IP;
+        //NotifyIcon notifyIcon;
         public string color;
         public string name;
         public string updateInterval;
-        System.Windows.Forms.Timer timer1;
-        RestClient restClient;
+        List<System.Windows.Forms.Timer> timerList = new List<System.Windows.Forms.Timer>();
+        Dictionary<int, NotifyIcon> sensorIconDict = new Dictionary<int, NotifyIcon>();
+        ToolStripMenuItem exitMenuItem;
+        public int numberOfSensors;
 
         public bool disabled = false;
 
@@ -29,76 +30,74 @@ namespace ShellyGen1Tray
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = CharSet.Auto)]
         extern static bool DestroyIcon(IntPtr handle);
 
-        public ShellyDevice(string _IP, string _color, string _name, string _updateInterval)
+        public ShellyDevice(string _color, string _name, string _updateInterval, int _numberOfSensors)
         {
-            IP = _IP;
+           
             color = _color;
             name = _name;
             updateInterval = _updateInterval;
+            numberOfSensors = _numberOfSensors;
 
-            ToolStripMenuItem exitMenuItem = new ToolStripMenuItem("Exit", null, new EventHandler(Exit));
+            exitMenuItem = new ToolStripMenuItem("Exit", null, new EventHandler(Exit));
 
-            restClient = new RestClient("http://" + IP + "/meter/0", HttpVerb.GET);
-
-            notifyIcon = new NotifyIcon();
-            UpdateIcon(0);
-            notifyIcon.ContextMenuStrip = new ContextMenuStrip();
-            notifyIcon.ContextMenuStrip.Items.Add(exitMenuItem);
-            notifyIcon.Visible = true;
-            notifyIcon.Text = name;
-
-            timer1 = new System.Windows.Forms.Timer();
-            timer1.Interval = Convert.ToInt32(updateInterval) * 1000;
-            timer1.Tick += new EventHandler(UpdateWatts);
-            timer1.Enabled = true;
-
+            
         }
 
-        void Exit(object sender, EventArgs e)
+        public void Exit(object sender, EventArgs e)
         {
             // We must manually tidy up and remove the icon before we exit.
             // Otherwise it will be left behind until the user mouses over.
-            notifyIcon.Visible = false;
-            timer1.Enabled = false;
-            timer1.Dispose();
-
+            
+            foreach(KeyValuePair<int,NotifyIcon> kvp in sensorIconDict )
+			{
+                kvp.Value.Visible = false;
+			}
+            
+            timerList.ForEach(x => { x.Enabled = false; x.Dispose(); });
+            
             disabled = true;
             ShellyGen1Tray.EvaluateExit();
 
             //Application.Exit();
         }
 
-        void UpdateWatts(object sender, EventArgs e)
-        {
-            if (Monitor.TryEnter(lockObj))
+        public void Start()
+		{
+            for (int i = 0; i < numberOfSensors; i++)
             {
-                string json = String.Empty;
-                try
-                {
-                    json = restClient.MakeRequest();
+                int sensorNo = i;
+                NotifyIcon notifyIcon = new NotifyIcon();
+                notifyIcon.ContextMenuStrip = new ContextMenuStrip();
+                notifyIcon.ContextMenuStrip.Items.Add(exitMenuItem);
+                notifyIcon.Visible = true;
+                notifyIcon.Text = name + "->" + i;
 
-                    ShellyResponse response = JsonSerializer.Deserialize<ShellyResponse>(json);
+                sensorIconDict.Add(i, notifyIcon);
 
-                    UpdateIcon(Convert.ToInt32(response.power));
+                UpdateIcon(0, i);
 
-                }
-                catch (Exception ex)
-                {
-                    //ignore timeouts due to Wifi instability
-                }
-                finally
-                {
-                    Monitor.Exit(lockObj);
-                }
+                System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                timer.Interval = Convert.ToInt32(updateInterval) * 1000;
+                timer.Tick += (sender2, e2) => UpdateWatts(sender2, e2, sensorNo);
+                timer.Enabled = true;
+
+                timerList.Add(timer);
+
             }
         }
 
+        public abstract void UpdateWatts(object sender, EventArgs e, int sensorNo);
 
-        private void UpdateIcon(int value)
+        public abstract void CheckConnection();
+
+        public void UpdateIcon(int value, int sensorNo)
         {
             String str;
 
-            str = String.Format("{0,3}", value);
+            if (value < 1000)
+                str = String.Format("{0,3}", value);
+            else
+                str = String.Format("{0:#,.#}", value);
 
             Pen pen = new Pen(Color.FromName(color));
 
@@ -121,9 +120,9 @@ namespace ShellyGen1Tray
             bitmap.Dispose();
             graph.Dispose();
 
-            notifyIcon.Icon = Icon.FromHandle(Hicon);
+            sensorIconDict[sensorNo].Icon = Icon.FromHandle(Hicon);
 
-            DestroyIcon(notifyIcon.Icon.Handle);
+            DestroyIcon(sensorIconDict[sensorNo].Icon.Handle);
 
         }
 

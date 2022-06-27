@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ShellyGen1Tray
+namespace ShellyTray
 {
     static class Program
     {
