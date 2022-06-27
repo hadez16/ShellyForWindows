@@ -4,17 +4,25 @@ A little tool for displaying the current power consumption of Shelly Gen1 API de
 ![2022-06-03 07_01_45-](https://user-images.githubusercontent.com/106725788/171790851-6a66ce45-4ccf-40f6-ae2e-c5fd2d825bfb.png)
 
 ## Description
-The tool is for all Gen1 Shelly Devices who support the /meter/0 REST endpoint for receiving the current power consumption e.g. a Shelly PlugS.
+The tool is for all Shelly Devices who support either Gen1 API or Gen2 API and have a /meter/ or Switch endpoint for receiving the current power consumption e.g. a Shelly PlugS or Shelly Plus 1 PM.
 
-Refer to https://shelly-api-docs.shelly.cloud/gen1/#shelly-family-overview for an overview.
+Refer to https://shelly-api-docs.shelly.cloud/gen1/#shelly-family-overview for an overview of Gen1 API Devices.
+
+Refer to https://shelly-api-docs.shelly.cloud/gen2/ (Section "Devices") for an overview of Gen2 API Devices.
 
 The config.ini file contains 1-to-n Shelly devices which are declared by its Name as the Section name, IP address, color for distinguishing in the System Tray and update interval in seconds.
+
+Multiple sensors per Shelly is supported (like for Shelly 2.5 etc.).
+
+The number of Sensors and the API Generation has to be declared in the config.ini
 
 ```
 [Balkonkraftwerk1]
 IPAddress=192.168.2.66
 Color=red
 UpdateInterval=5
+NumberOfSensors=1
+APIgeneration=1
 ```
 
 The possible values for "Color" refer to the possible .NET color values.
@@ -27,7 +35,7 @@ Refer to http://www.flounder.com/csharp_color_table.htm for possible values. Use
 ## How-To and Best Practice
 * Download the releae or build the solution by yourself
 * Edit the .ini to your needs
-* Run the ShellyGen1Tray.exe
+* Run the ShellyTray.exe
 
 ***It is highly recommended to assign a static IP address to your Shelly device because DHCP servers could assign another IP address what will break your config.ini configuration***
 
