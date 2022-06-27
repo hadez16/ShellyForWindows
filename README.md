@@ -1,5 +1,5 @@
 # ShellyForWindows
-A little tool for displaying the current power consumption of Shelly Gen1 API devices in the Windows system tray
+A little tool for displaying the current power consumption of Shelly devices in the Windows system tray
 
 ![2022-06-03 07_01_45-](https://user-images.githubusercontent.com/106725788/171790851-6a66ce45-4ccf-40f6-ae2e-c5fd2d825bfb.png)
 
