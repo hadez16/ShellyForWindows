@@ -75,7 +75,7 @@ namespace ShellyTray
 
 					ShellyResponseGen2 response = JsonSerializer.Deserialize<ShellyResponseGen2>(json);
 
-					UpdateIcon(Convert.ToInt32(response.apower), sensorNo);
+					UpdateIcon(Convert.ToInt32((response.apower < 0.0 ? response.apower * -1 : response.apower)), sensorNo);
 
 				}
 				catch (Exception ex)
