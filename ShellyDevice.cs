@@ -97,7 +97,7 @@ namespace ShellyTray
             if (value < 1000)
                 str = String.Format("{0,3}", value);
             else
-                str = String.Format("{0:#,.#}", value);
+                str = String.Format("{0:#,.0}", value);
 
             Pen pen = new Pen(Color.FromName(color));
 
